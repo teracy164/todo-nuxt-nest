@@ -35,11 +35,15 @@ import { Loading } from 'element-ui';
 import { Todo } from '../types/todo';
 import { dateFormat } from '../filters/date';
 
+interface Data {
+  todos: Todo[],
+}
+
 export default Vue.extend({
   filters: {
     dateFormat,
   },
-  data() {
+  data(): Data {
     return {
       todos: []
     }
