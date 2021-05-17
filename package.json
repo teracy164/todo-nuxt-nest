@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "init:dev": "cp -a .env.local .env && npm install",
+    "init:prod": "cp -a .env.prod .env && npm install",
+    "postinstall": "lerna bootstrap",
+    "build": "lerna run build:prod",
+    "dev": "docker-compose --file=docker-compose.dev.yml up",
+    "start": "docker-compose --file=docker-compose.prod.yml up"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

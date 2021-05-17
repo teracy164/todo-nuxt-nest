@@ -1,0 +1,36 @@
+version: "3"
+services:
+  server:
+    image: node:12-alpine
+    container_name: server
+    working_dir: /develop
+    volumes:
+      - ./packages/server/package.json:/develop/package.json
+      - ./packages/server/node_modules:/develop/node_modules
+      - ./packages/server/dist:/develop/dist
+      - ./packages/front/dist:/develop/public
+    ports:
+      - 3000:3000
+    links:
+      - todo-db
+    command: "npm run start:prod"
+    environment:
+      - PORT=${SERVER_PORT}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+
+  todo-db:
+    image: postgres:12-alpine
+    container_name: todo-db
+    ports:
+      - 5432:5432
+    volumes:
+      - .db/prod/data:/var/lib/postgresql/data
+      - .db/prod/initdb:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_DB=${DATABASE_NAME}

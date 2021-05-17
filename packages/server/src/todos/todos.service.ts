@@ -1,0 +1,46 @@
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { Todo } from './todo.entity';
+
+@Injectable()
+export class TodosService {
+  constructor(
+    @Inject('TODOS_REPOSITORY')
+    private todosRepository: typeof Todo,
+  ) {}
+
+  async findAll(): Promise<Todo[]> {
+    return this.todosRepository.findAll<Todo>({
+      order: ['isCompleted', 'start'],
+    });
+  }
+
+  async add(todo: Todo): Promise<Todo> {
+    return this.todosRepository.create(todo);
+  }
+
+  async update(id: number, todo: Todo): Promise<Todo> {
+    const target = await this.todosRepository.findOne({ where: { id } });
+    if (target) {
+      const { id, ...data } = todo;
+      Object.assign(target, data);
+      return target.save();
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  async updatePertial(id: number, todo: Todo): Promise<Todo> {
+    const target = await this.todosRepository.findOne({ where: { id } });
+    if (target) {
+      target.isCompleted = todo.isCompleted;
+      return target.save();
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  async delete(id: number) {
+    await this.todosRepository.destroy({ where: { id } });
+    return;
+  }
+}
