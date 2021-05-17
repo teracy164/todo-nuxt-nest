@@ -8,9 +8,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   if (env === 'develop') {
-    // 開発環境は別コンテナで起動するためCORSを許可する
-    app.enableCors();
-
     // OpenAPIの設定
     const config = new DocumentBuilder()
       .setTitle('TODO App API example')

@@ -2,7 +2,7 @@ version: "3"
 services:
   server:
     image: node:12-alpine
-    container_name: server
+    container_name: todo-server
     working_dir: /develop
     volumes:
       - ./packages/server/package.json:/develop/package.json
@@ -10,9 +10,9 @@ services:
       - ./packages/server/dist:/develop/dist
       - ./packages/front/dist:/develop/public
     ports:
-      - 3000:3000
+      - 80:${SERVER_PORT}
     links:
-      - todo-db
+      - db
     command: "npm run start:prod"
     environment:
       - PORT=${SERVER_PORT}
@@ -22,7 +22,7 @@ services:
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
 
-  todo-db:
+  db:
     image: postgres:12-alpine
     container_name: todo-db
     ports:
