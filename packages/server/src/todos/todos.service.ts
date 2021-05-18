@@ -21,8 +21,8 @@ export class TodosService {
   async update(id: number, todo: Todo): Promise<Todo> {
     const target = await this.todosRepository.findOne({ where: { id } });
     if (target) {
-      const { id, ...data } = todo;
-      Object.assign(target, data);
+      delete todo.id;
+      Object.assign(target, todo);
       return target.save();
     } else {
       throw new NotFoundException();
