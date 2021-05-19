@@ -3,14 +3,11 @@ import { Todo } from './todo.entity';
 
 @Injectable()
 export class TodosService {
-  constructor(
-    @Inject('TODOS_REPOSITORY')
-    private todosRepository: typeof Todo,
-  ) {}
+  constructor(@Inject('TODOS_REPOSITORY') private todosRepository: typeof Todo) {}
 
   async findAll(): Promise<Todo[]> {
     return this.todosRepository.findAll<Todo>({
-      order: ['isCompleted', 'start'],
+      order: ['isCompleted', 'end', 'start'],
     });
   }
 

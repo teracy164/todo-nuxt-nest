@@ -1,4 +1,4 @@
-import { Table, Column, Model } from 'sequelize-typescript';
+import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
 @Table
 export class Todo extends Model {
@@ -8,10 +8,10 @@ export class Todo extends Model {
   @Column
   contents: string;
 
-  @Column
+  @Column({ type: DataType.DATEONLY })
   start: Date;
 
-  @Column
+  @Column({ type: DataType.DATEONLY })
   end: Date;
 
   @Column({ field: 'is_completed', allowNull: false, defaultValue: false })
