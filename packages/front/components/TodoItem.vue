@@ -28,8 +28,8 @@
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import moment from 'moment';
 import { Loading } from 'element-ui';
-import { Todo } from '../types/todo';
 import { dateFormat } from '../filters/date';
+import { Todo } from '~/openapi';
 
 @Component({
   filters: {
@@ -38,7 +38,7 @@ import { dateFormat } from '../filters/date';
 })
 export default class TodoItem extends Vue {
   @Prop({ required: true })
-  todo: Todo | undefined;
+  todo: Todo;
 
   get isOver() {
     return this.todo?.end ? moment().isAfter(this.todo.end, 'date') : false;
@@ -50,36 +50,30 @@ export default class TodoItem extends Vue {
     }
 
     const loading = Loading.service({});
-    await this.$api.updatePertialTodo({
-      id: this.todo.id,
-      isCompleted: !this.todo.isCompleted,
-    });
+    await this.$api.updateTodoPartial(this.todo.id, { isCompleted: !this.todo.isCompleted });
 
     loading.close();
     this.$emit('completed');
   }
 
-  async deleteTodo() {
+  deleteTodo() {
+    this.$confirm('削除してよろしいですか？', {
+      confirmButtonText: '削除',
+      confirmButtonClass: 'el-button--danger',
+      cancelButtonText: 'キャンセル',
+      type: 'warning',
+    }).then(() => this.deleteProc());
+  }
+
+  private async deleteProc() {
     if (!this.todo) {
       return;
     }
+    const loading = Loading.service({});
+    await this.$api.deleteTodo(this.todo.id);
+    loading.close();
 
-    try {
-      await this.$confirm('削除してよろしいですか？', {
-        confirmButtonText: '削除',
-        confirmButtonClass: 'el-button--danger',
-        cancelButtonText: 'キャンセル',
-        type: 'warning',
-      });
-
-      const loading = Loading.service({});
-      await this.$api.deleteTodo(this.todo.id);
-      loading.close();
-
-      this.$emit('deleted');
-    } catch (err) {
-      // delete cancel
-    }
+    this.$emit('deleted');
   }
 }
 </script>

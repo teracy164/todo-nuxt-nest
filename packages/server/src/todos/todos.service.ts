@@ -11,8 +11,8 @@ export class TodosService {
     });
   }
 
-  async add(todo: Todo): Promise<Todo> {
-    return this.todosRepository.create(todo);
+  async add(todo: Todo[]): Promise<Todo[]> {
+    return this.todosRepository.bulkCreate(todo);
   }
 
   async update(id: number, todo: Todo): Promise<Todo> {
@@ -26,7 +26,7 @@ export class TodosService {
     }
   }
 
-  async updatePertial(id: number, todo: Todo): Promise<Todo> {
+  async updatePertial(id: number, todo: Partial<Todo>): Promise<Todo> {
     const target = await this.todosRepository.findOne({ where: { id } });
     if (target) {
       target.isCompleted = todo.isCompleted;

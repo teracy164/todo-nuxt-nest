@@ -18,7 +18,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 import { Loading } from 'element-ui';
-import { Todo } from '../types/todo';
+import { Todo } from '~/openapi';
 
 @Component
 export default class Index extends Vue {
