@@ -18,18 +18,23 @@ export class TodosService {
   async update(id: number, todo: Todo): Promise<Todo> {
     const target = await this.todosRepository.findOne({ where: { id } });
     if (target) {
-      delete todo.id;
-      Object.assign(target, todo);
+      target.contents = todo.contents;
+      target.start = todo.start;
+      target.end = todo.end;
       return target.save();
     } else {
       throw new NotFoundException();
     }
   }
 
-  async updatePertial(id: number, todo: Partial<Todo>): Promise<Todo> {
+  async updatePartial(id: number, todo: Partial<Todo>): Promise<Todo> {
     const target = await this.todosRepository.findOne({ where: { id } });
     if (target) {
-      target.isCompleted = todo.isCompleted;
+      ['contents', 'start', 'end', 'isCompleted'].forEach((prop) => {
+        if (prop in todo) {
+          target[prop] = todo[prop];
+        }
+      });
       return target.save();
     } else {
       throw new NotFoundException();

@@ -5,7 +5,7 @@
         <el-form-item label="内容" prop="contents">
           <el-input v-model="form.contents" />
         </el-form-item>
-        <el-form-item label="期間" prop="period">
+        <el-form-item label="期間" prop="period" class="is-required">
           <el-col :span="11">
             <el-date-picker v-model="start" class="date" type="date" placeholder="開始日" />
           </el-col>
@@ -85,12 +85,10 @@ export default class EditDialog extends Vue {
     if (todo) {
       Object.assign(this.form, todo);
     } else {
-      this.form = {
-        contents: '',
-        start: null,
-        end: null,
-        isCompleted: false,
-      };
+      this.form.contents = null;
+      this.form.start = null;
+      this.form.end = null;
+      this.form.isCompleted = false;
     }
 
     this.isVisible = true;

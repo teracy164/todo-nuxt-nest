@@ -25,16 +25,16 @@ export class TodosController {
 
   @Put(':id')
   @ApiOperation({ summary: 'TODO更新', operationId: 'updateTodo' })
-  @ApiResponse({ status: 201, type: Todo })
+  @ApiResponse({ status: 200, type: Todo })
   update(@Param('id', ParseIntPipe) id: number, @Body() body: Todo): Promise<Todo> {
     return this.todoService.update(id, body);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'TODO部分更新', operationId: 'updateTodoPartial' })
-  @ApiResponse({ status: 201, type: Todo })
-  updatePartial(@Param('id', ParseIntPipe) id: number, @Body() body: Partial<Todo>): Promise<Todo> {
-    return this.todoService.updatePertial(id, body);
+  @ApiResponse({ status: 200, type: Todo })
+  updatePartial(@Param('id', ParseIntPipe) id: number, @Body() body: Todo): Promise<Todo> {
+    return this.todoService.updatePartial(id, body);
   }
 
   @Delete(':id')

@@ -18,3 +18,12 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## API クライアント作成時
+
+- ローカル環境起動（サーバー再度のコンテナ起動の必要あり）
+- 以下コマンドを実行
+
+```shell
+npm run generate:api-client
+```
