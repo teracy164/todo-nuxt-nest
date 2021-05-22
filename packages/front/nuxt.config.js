@@ -1,6 +1,8 @@
 export default {
+  target: 'static',
   server: {
     host: '0.0.0.0', // デフォルト: localhost
+    port: process.env.PORT || 3000,
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -38,9 +40,7 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {
-    baseURL: process.env.API_BASE_URL || '/',
-  },
+  axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
